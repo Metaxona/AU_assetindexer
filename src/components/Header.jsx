@@ -82,7 +82,7 @@ export function Header({alchemyAPIKey, setAlchemyAPIKey}) {
                     <br />
                     {isConnected ? <Box padding={'0.3rem'}>
                       <Text fontSize={'small'}>Alchemy API Key</Text>
-                      <Input placeholder='Alchemy API_KEY' defaultValue={alchemyAPIKey} onChange={apikeychange} onBlur={apikeychange} />
+                      <Input type={'password'} placeholder='Alchemy API_KEY' defaultValue={alchemyAPIKey} onChange={apikeychange} onBlur={apikeychange} />
                     </Box> : "" }
                     <MenuDivider />
                     {isConnected 
