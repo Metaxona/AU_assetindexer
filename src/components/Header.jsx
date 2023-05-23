@@ -55,7 +55,7 @@ export function Header({alchemyAPIKey, setAlchemyAPIKey}) {
 
               <Box>
               <Menu>
-                <Tooltip label={`${address}`}>
+                <Tooltip label={`${address || "Not Connected"}`}>
                 <MenuButton
                   as={Button}
                   rounded={'full'}
