@@ -1,7 +1,7 @@
 import {
   Box,
   Button,
-  Center,
+  SimpleGrid,
   ChakraProvider,
   Flex,
   Heading,
@@ -102,6 +102,7 @@ function App() {
         const NFTData = await alchemy.nft.getNftsForOwner(address);
   
         setNftData(NFTData.ownedNfts)
+        console.log(NFTData.ownedNfts)
         setHasQueried(true);
         setIsLoading(false)
         setFetchError(null)
@@ -206,7 +207,6 @@ function App() {
                         <Text key={e.id + "-name"} wordBreak={'break-word'} size={5} >{tokenDataObjects[i].name}</Text>
                         <Text key={e.id + "-balance"}>
                           {parseFloat(Number(Utils.formatUnits(e.tokenBalance, tokenDataObjects[i].decimals)).toFixed(4))} &nbsp;
-                          {/* <Tag maxW={'4rem'} whiteSpace={'nowrap'} overflow={'hidden'} textOverflow={'ellipsis'} colorScheme='grey' borderRadius='full' variant='solid' p={2}>${tokenDataObjects[i].symbol}</Tag> */}
                         </Text>
                       </Box>
                     </Flex>
@@ -234,6 +234,19 @@ function App() {
                   <Link key={item.contract.address+ "-openseaLink"} target='_blank' href={`https://opensea.io/assets/${openSeaNetwork}/${item.contract.address}/${item.tokenId}`}>
                     <Image src={OSLogo} alt='Opensea' title={`https://opensea.io/assets/${openSeaNetwork}/${item.contract.address}/${item.tokenId}`} w={'2rem'} mt={2} /> 
                   </Link>
+                  <Popover> 
+                    <PopoverTrigger>
+                      <Button mt={'1rem'}>Attributes</Button>
+                    </PopoverTrigger> 
+                    <PopoverContent padding={'0.5rem'} >
+                      <Text fontSize={'large'}>Attributes: </Text>
+                      <SimpleGrid minChildWidth={'7rem'} spacing={'0.5rem'}>
+                        {item.rawMetadata?.attributes?.map((item)=><Card textAlign={'center'} padding={'0.5rem'}>
+                          <Text fontSize={'large'} fontWeight={'bold'}>{item.value}</Text>
+                          <Text fontSize={'small'}>{item.trait_type}</Text></Card>)}
+                      </SimpleGrid>
+                    </PopoverContent>
+                </Popover>
                   </CardBody>
                 </Card>
                 )}
