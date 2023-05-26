@@ -85,7 +85,8 @@ export function Header({alchemyAPIKey, setAlchemyAPIKey}) {
                       <Input type={'password'} placeholder='Alchemy API_KEY' defaultValue={alchemyAPIKey} onChange={apikeychange} onBlur={apikeychange} />
                     </Box> : "" }
                     <MenuDivider />
-                    {isConnected 
+                    {(!window?.ethereum) ? "No Wallet Found" 
+                    : isConnected 
                     ? <MenuItem onClick={()=>disconnect()}><Flex alignItems={'center'} w={"100%"} justifyContent={'space-between'}><Text display={'inline-flex'}>Disconnect</Text> <Icon as={ArrowRightIcon} /></Flex></MenuItem>
                     : connectors.filter((x) => x.ready && x.id !== connector?.id).map((x) => ( <MenuItem key={x.id} onClick={() => connect({ connector: x })} title={`${x.name === "Injected" ? "Wallet" : x.name}`}>{x.name === "Injected" ? "Wallet" : x.name}</MenuItem>))  
                     }  

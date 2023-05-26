@@ -2,6 +2,7 @@ import { configureChains, createConfig } from 'wagmi'
 import { sepolia, mainnet, polygon, bsc } from 'wagmi/chains'
 import { InjectedConnector } from 'wagmi/connectors/injected'
 import { MetaMaskConnector } from 'wagmi/connectors/metaMask'
+import { alchemyProvider } from 'wagmi/providers/alchemy'
 
 import { publicProvider } from 'wagmi/providers/public'
 

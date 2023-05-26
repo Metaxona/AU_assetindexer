@@ -102,7 +102,6 @@ function App() {
         const NFTData = await alchemy.nft.getNftsForOwner(address);
   
         setNftData(NFTData.ownedNfts)
-        console.log(NFTData.ownedNfts)
         setHasQueried(true);
         setIsLoading(false)
         setFetchError(null)
@@ -196,7 +195,7 @@ function App() {
         : (assetDisplay === "TOKEN") 
         ? (hasQueried && (
             <Flex w={'100vw'} gap={"1rem"} padding={"1rem"} flexWrap={"wrap"} justifyContent={'center'} >
-            {results.tokenBalances.map((e, i) => {
+            {(results?.tokenBalances.length) === 0 ? <Text>No Tokens Found</Text> : results.tokenBalances.map((e, i) => {
               return (
                 <Card px={'1rem'} py={"0.5rem"} minW={'17rem'}  w={'20rem'} key={e.id}  direction={{ base: 'row', xs: 'column', sm: 'column', md: 'row', lg: 'row', xl: 'row' }} alignItems={'center'} >
                   <CardHeader>
@@ -217,17 +216,20 @@ function App() {
             })}
           </Flex>
         )) 
-        :(        
+        :(hasQueried &&        
           <Flex w={'100vw'} gap={"1rem"} padding={"1rem"} flexWrap={"wrap"} justifyContent={'center'} >
-                {nftData && nftData.map((item)=>
+                {(nftData.length) === 0 ? <Text>No NFTs Found</Text> : nftData.map((item)=>
                 <Card key={item.contract.address + item.tokenId + "-card"} minW={'17rem'} w={'20rem'} padding={"0.5rem"} >
                   <CardHeader key={item.contract.address+ "-cardheader"} >
                     <Badge key={item.contract.address+ "-tokenType"} padding={'0.5rem'} variant='outline' colorScheme='blue' mb={2} >{item.contract.tokenType}</Badge>
-                    <Image aspectRatio={1} w={"100%"} key={item.contract.address+ "-tokenImage"} alt={item.contract.name || item.contract?.openSea.collectionName || item.title} src={IPFStoHTTP(item.rawMetadata?.image_url || item.rawMetadata?.image || item.contract?.openSea.imageUrl || "https://xdc.blocksscan.io/_nuxt/img/nft-placeholder.813e0c0.svg")} />
+                    <Image aspectRatio={1} w={"100%"} key={item.contract.address+ "-tokenImage"} alt={item.contract.name || item.contract?.openSea?.collectionName || item.title} src={IPFStoHTTP(item.rawMetadata?.image_url || item.rawMetadata?.image || item.contract?.openSea.imageUrl || "https://xdc.blocksscan.io/_nuxt/img/nft-placeholder.813e0c0.svg")} />
                   </CardHeader>
                   <CardBody key={item.contract.address+ "-cardbody"} >
+                    <Tooltip label={`click to copy: ${item.tokenId}`}>
+                      <Badge cursor={'pointer'} key={item.contract.address+ "-tokenIdBadge"} padding={'0.5rem'} variant='outline' colorScheme='green' mb={2} onClick={()=>{navigator.clipboard.writeText(item.tokenId)}} >ID: {`${item.tokenId}`.length > 8 ? `${item.tokenId.substring(0, 7)}...` : item.tokenId}</Badge>
+                    </Tooltip>
                   <Heading key={item.contract.address+ "-tokenName"} fontSize={'medium'} wordBreak={'break-word'}>{item.title || `${item.contract.address} [Id: ${item.tokenId}]`} </Heading>
-                  <Text key={item.contract.address+ "-collectionName"}>{item.contract.name || item.contract?.openSea.collectionName}</Text>
+                  <Text key={item.contract.address+ "-collectionName"}>{item.contract.name || item.contract?.openSea?.collectionName || ""}</Text>
                   {item.contract.openSea.floorPrice && <Text>Floor Price: {item.contract.openSea.floorPrice}</Text>}
                   <Link key={item.contract.address+ "-openseaLink"} target='_blank' href={`https://opensea.io/assets/${openSeaNetwork}/${item.contract.address}/${item.tokenId}`}>
                     <Image src={OSLogo} alt='Opensea' title={`https://opensea.io/assets/${openSeaNetwork}/${item.contract.address}/${item.tokenId}`} w={'2rem'} mt={2} /> 
