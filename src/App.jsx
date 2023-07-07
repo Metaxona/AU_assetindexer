@@ -222,7 +222,7 @@ function App() {
                 <Card key={item.contract.address + item.tokenId + "-card"} minW={'17rem'} w={'20rem'} padding={"0.5rem"} >
                   <CardHeader key={item.contract.address+ "-cardheader"} >
                     <Badge key={item.contract.address+ "-tokenType"} padding={'0.5rem'} variant='outline' colorScheme='blue' mb={2} >{item.contract.tokenType}</Badge>
-                    <Image aspectRatio={1} w={"100%"} key={item.contract.address+ "-tokenImage"} alt={item.contract.name || item.contract?.openSea?.collectionName || item.title} src={IPFStoHTTP(item.rawMetadata?.image_url || item.rawMetadata?.image || item.contract?.openSea.imageUrl || "https://xdc.blocksscan.io/_nuxt/img/nft-placeholder.813e0c0.svg")} />
+                    <Image aspectRatio={1} w={"100%"} key={item.contract.address+ "-tokenImage"} alt={item.contract.name || item.contract?.openSea?.collectionName || item.title} src={IPFStoHTTP(item.rawMetadata?.image_url || item.rawMetadata?.image || "https://xdc.blocksscan.io/_nuxt/img/nft-placeholder.813e0c0.svg")} />
                   </CardHeader>
                   <CardBody key={item.contract.address+ "-cardbody"} >
                     <Tooltip label={`click to copy: ${item.tokenId}`}>
