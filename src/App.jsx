@@ -232,7 +232,7 @@ function App() {
                   <Tooltip label={`click to copy contract address: ${item.contract.address}`}>
                     <Text cursor={'pointer'} onClick={()=>{navigator.clipboard.writeText(item.contract.address)}} key={item.contract.address+ "-collectionName"}>{item.contract.name || item.contract?.openSea?.collectionName || ""}</Text>
                   </Tooltip>
-                  {item.contract.openSea.floorPrice && <Text>Floor Price: {item.contract.openSea.floorPrice}</Text>}
+                  {item.contract?.openSea?.floorPrice && <Text>Floor Price: {item.contract.openSea.floorPrice}</Text>}
                   <Link key={item.contract.address+ "-openseaLink"} target='_blank' href={`https://opensea.io/assets/${openSeaNetwork}/${item.contract.address}/${item.tokenId}`}>
                     <Image src={OSLogo} alt='Opensea' title={`https://opensea.io/assets/${openSeaNetwork}/${item.contract.address}/${item.tokenId}`} w={'2rem'} mt={2} /> 
                   </Link>
