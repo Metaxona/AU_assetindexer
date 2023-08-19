@@ -1,5 +1,5 @@
 import { MoonIcon, SunIcon } from "@chakra-ui/icons";
-import { Box, Button, Flex, Hide, Image, Input, Menu, MenuButton, MenuDivider, MenuList, Stack, Text, Tooltip, useColorMode, useColorModeValue } from "@chakra-ui/react";
+import { Box, Button, Flex, Hide, Image, Input, Link, Menu, MenuButton, MenuDivider, MenuList, Stack, Text, Tooltip, useColorMode, useColorModeValue } from "@chakra-ui/react";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { useEffect } from "react";
 import { BiKey } from "react-icons/bi";
@@ -52,6 +52,9 @@ export function Header({ alchemyAPIKey, setAlchemyAPIKey }) {
                                         <Text fontSize={"md"}>Alchemy API Key</Text>
                                         <MenuDivider />
                                         <Input type={"password"} placeholder="Alchemy API_KEY" defaultValue={alchemyAPIKey} onChange={apikeychange} onBlur={apikeychange} />
+                                        <Link href={"https://docs.alchemy.com/docs/alchemy-quickstart-guide#1key-create-an-alchemy-key"} target="_blank">
+                                            How To Get Your Own API Key?
+                                        </Link>
                                     </Box>
                                 </MenuList>
                             </Menu>
