@@ -6,6 +6,7 @@ import { useAccount } from "wagmi";
 import { NftCard, TokenCard } from "./components/Cards";
 import { Header } from "./components/Header";
 import Footer from "./components/Footer";
+import PleaseConnect from "./components/PleaseConnect";
 
 const networks = {
     eth: Network.ETH_MAINNET,
@@ -168,58 +169,66 @@ function App() {
         <ChakraProvider>
             <Header alchemyAPIKey={alchemyAPIKey} setAlchemyAPIKey={setAlchemyAPIKey} />
             <Flex h={"100dvh"} padding={"1rem"} flexDirection={"column"}>
-                <Flex flexDirection={"row"} gap={"1rem"} alignItems={"center"} flexWrap={"wrap"} mb={3}>
-                    <Flex alignItems={"center"} gap={"1rem"}>
-                        <Text>Network: </Text>
-                        <Select maxW={"12rem"} onChange={onChangeNetwork} value={localStorage.getItem("currentNetwork") || "eth"}>
-                            <option value="eth">Ethereum</option>
-                            <option value="polygon">Polygon</option>
-                            <option value="optimism">Optimism</option>
-                            <option value="arbitrum">Arbitrum</option>
-                            <option value="ethsepolia">Sepolia (Ethereum)</option>
-                            <option value="maticmumbai">Mumbai (Polygon)</option>
-                            <option value="goerli">Goerli (Ethereum)</option>
-                            <option value="arbitrumgoerli">Goerli (Arbitrum)</option>
-                            <option value="optimismgoerli">Goerli (Optimism)</option>
-                        </Select>
+                {isConnected ? (
+                    <>
+                        <Flex flexDirection={"row"} gap={"1rem"} alignItems={"center"} flexWrap={"wrap"} mb={3}>
+                            <Flex alignItems={"center"} gap={"1rem"}>
+                                <Text>Network: </Text>
+                                <Select maxW={"12rem"} onChange={onChangeNetwork} value={localStorage.getItem("currentNetwork") || "eth"}>
+                                    <option value="eth">Ethereum</option>
+                                    <option value="polygon">Polygon</option>
+                                    <option value="optimism">Optimism</option>
+                                    <option value="arbitrum">Arbitrum</option>
+                                    <option value="ethsepolia">Sepolia (Ethereum)</option>
+                                    <option value="maticmumbai">Mumbai (Polygon)</option>
+                                    <option value="goerli">Goerli (Ethereum)</option>
+                                    <option value="arbitrumgoerli">Goerli (Arbitrum)</option>
+                                    <option value="optimismgoerli">Goerli (Optimism)</option>
+                                </Select>
+                            </Flex>
+
+                            <Flex alignItems={"center"} gap={"1rem"}>
+                                <Text>Asset: </Text>
+                                <Select maxW={"12rem"} onChange={onChangeAsset} value={localStorage.getItem("selectedAsset") || "TOKEN"}>
+                                    <option value="TOKEN">Token</option>
+                                    <option value="NFT">NFT</option>
+                                </Select>
+                            </Flex>
+                        </Flex>
+
+                        <Flex flexDirection="column" alignItems="center" justifyContent={"start"} gap={"1rem"}>
+                            <Flex flexDirection={"row"} gap={"1rem"} alignItems={"center"} flexWrap={"wrap"}>
+                                <Heading>{assetDisplay}</Heading>
+                                <Tooltip label="Refresh">
+                                    <Icon as={RepeatIcon} fontSize={20} onClick={() => setIsRefreshed(!isRefreshed)} />
+                                </Tooltip>
+                            </Flex>
+
+                            <Flex w={"100dvw"} gap={"1rem"} flexDirection={"row"} flexWrap={"wrap"} justifyContent={"center"}>
+                                {isLoading && <Spinner />}
+
+                                {!isLoading && hasErrors && <Text p={"0.5rem"}>An Error Has Occurred! You May Be Rate Limited, Please Use A Proper Alchemy API Key For A Better Experience</Text>}
+
+                                {isConnected && assetDisplay === "TOKEN" && hasQueried && tokenDataObjects?.length === 0 && <Text>No Tokens Found</Text>}
+                                {isConnected && assetDisplay === "NFT" && hasQueried && nftData.length === 0 && <Text>No NFTs Found</Text>}
+
+                                {assetDisplay === "TOKEN" &&
+                                    hasQueried &&
+                                    !hasErrors &&
+                                    results?.tokenBalances.length !== 0 &&
+                                    results.tokenBalances.map((e, i) => {
+                                        return <TokenCard key={`token-${i}-${tokenDataObjects[i].symbol}-${tokenDataObjects[i].name}`} tokenDataObjects={tokenDataObjects} index={i} element={e} />;
+                                    })}
+
+                                {assetDisplay === "NFT" && hasQueried && !hasErrors && nftData.length !== 0 && nftData.map((item) => <NftCard key={`nft-${item.contract.address}-${item.tokenId}`} nftInfo={item} openSeaNetwork={openSeaNetwork} />)}
+                            </Flex>
+                        </Flex>
+                    </>
+                ) : (
+                    <Flex justifyContent={"center"}>
+                        <PleaseConnect />
                     </Flex>
-
-                    <Flex alignItems={"center"} gap={"1rem"}>
-                        <Text>Asset: </Text>
-                        <Select maxW={"12rem"} onChange={onChangeAsset} value={localStorage.getItem("selectedAsset") || "TOKEN"}>
-                            <option value="TOKEN">Token</option>
-                            <option value="NFT">NFT</option>
-                        </Select>
-                    </Flex>
-                </Flex>
-
-                <Flex flexDirection="column" alignItems="center" justifyContent={"start"} gap={"1rem"}>
-                    <Flex flexDirection={"row"} gap={"1rem"} alignItems={"center"} flexWrap={"wrap"}>
-                        <Heading>{assetDisplay}</Heading>
-                        <Tooltip label="Refresh">
-                            <Icon as={RepeatIcon} fontSize={20} onClick={() => setIsRefreshed(!isRefreshed)} />
-                        </Tooltip>
-                    </Flex>
-
-                    <Flex w={"100dvw"} gap={"1rem"} flexDirection={"row"} flexWrap={"wrap"} justifyContent={"center"}>
-                        {isLoading && <Spinner />}
-
-                        {!isLoading && hasErrors && <Text p={"0.5rem"}>An Error Has Occurred! You May Be Rate Limited, Please Use A Proper Alchemy API Key For A Better Experience</Text>}
-
-                        {isConnected && assetDisplay === "TOKEN" && hasQueried && tokenDataObjects?.length === 0 && <Text>No Tokens Found</Text>}
-                        {isConnected && assetDisplay === "NFT" && hasQueried && nftData.length === 0 && <Text>No NFTs Found</Text>}
-
-                        {assetDisplay === "TOKEN" &&
-                            hasQueried &&
-                            !hasErrors &&
-                            results?.tokenBalances.length !== 0 &&
-                            results.tokenBalances.map((e, i) => {
-                                return <TokenCard key={`token-${i}-${tokenDataObjects[i].symbol}-${tokenDataObjects[i].name}`} tokenDataObjects={tokenDataObjects} index={i} element={e} />;
-                            })}
-
-                        {assetDisplay === "NFT" && hasQueried && !hasErrors && nftData.length !== 0 && nftData.map((item) => <NftCard key={`nft-${item.contract.address}-${item.tokenId}`} nftInfo={item} openSeaNetwork={openSeaNetwork} />)}
-                    </Flex>
-                </Flex>
+                )}
             </Flex>
             <Hide below={"lg"}>
                 <Footer />
