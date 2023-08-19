@@ -10,7 +10,7 @@ import { chains, wagmiConfig } from "./wagmi";
 ReactDOM.createRoot(document.getElementById("root")).render(
     <React.StrictMode>
         <WagmiConfig config={wagmiConfig}>
-            <RainbowKitProvider chains={chains} initialChain={mainnet} theme={{ lightMode: lightTheme(), darkMode: darkTheme() }}>
+            <RainbowKitProvider chains={chains} theme={{ lightMode: lightTheme(), darkMode: darkTheme() }}>
                 <App />
             </RainbowKitProvider>
         </WagmiConfig>
