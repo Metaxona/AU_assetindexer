@@ -21,59 +21,57 @@ export function Header({ alchemyAPIKey, setAlchemyAPIKey }) {
     };
 
     return (
-        <>
-            <Box bg={useColorModeValue("gray.100", "gray.900")} px={4}>
-                <Flex h={16} alignItems={"center"} justifyContent={"space-between"}>
-                    <Flex flexDirection={"row"} gap={"1rem"} alignItems={"center"}>
-                        <Image w={"2rem"} src={SiteIcon} alt="AssetIndexer" />
-                        <Hide below={"lg"}>
-                            <Box display={"inline-flex"}>
-                                <Text fontWeight={"bold"} fontSize={"x-large"}>
-                                    Asset
-                                </Text>
-                                <Text fontWeight={"bold"} fontSize={"x-large"} color={"#5CB9FE"}>
-                                    Indexer
-                                </Text>
-                            </Box>
-                        </Hide>
-                    </Flex>
-
-                    <Flex alignItems={"center"}>
-                        <Stack direction={"row"} spacing={7}>
-                            <Button onClick={toggleColorMode}>{colorMode === "light" ? <MoonIcon /> : <SunIcon />}</Button>
-                            <Box>
-                                <Menu>
-                                    <Tooltip label={"Alchemy API Key"}>
-                                        <MenuButton as={Button} variant={"ghost"}>
-                                            <BiKey />
-                                        </MenuButton>
-                                    </Tooltip>
-                                    <MenuList alignItems={"center"}>
-                                        <Box padding={"0.3rem"}>
-                                            <Text fontSize={"md"}>Alchemy API Key</Text>
-                                            <MenuDivider />
-                                            <Input type={"password"} placeholder="Alchemy API_KEY" defaultValue={alchemyAPIKey} onChange={apikeychange} onBlur={apikeychange} />
-                                        </Box>
-                                    </MenuList>
-                                </Menu>
-                            </Box>
-                            <Box>
-                                <ConnectButton
-                                    label={<FaWallet />}
-                                    accountStatus={{
-                                        smallScreen: "avatar",
-                                        largeScreen: "full",
-                                    }}
-                                    showBalance={{
-                                        smallScreen: false,
-                                        largeScreen: true,
-                                    }}
-                                />
-                            </Box>
-                        </Stack>
-                    </Flex>
+        <Box bg={useColorModeValue("gray.100", "gray.900")} px={4}>
+            <Flex h={16} alignItems={"center"} justifyContent={"space-between"}>
+                <Flex flexDirection={"row"} gap={"1rem"} alignItems={"center"}>
+                    <Image w={"2rem"} src={SiteIcon} alt="AssetIndexer" />
+                    <Hide below={"lg"}>
+                        <Box display={"inline-flex"}>
+                            <Text fontWeight={"bold"} fontSize={"x-large"}>
+                                Asset
+                            </Text>
+                            <Text fontWeight={"bold"} fontSize={"x-large"} color={"#5CB9FE"}>
+                                Indexer
+                            </Text>
+                        </Box>
+                    </Hide>
                 </Flex>
-            </Box>
-        </>
+
+                <Flex alignItems={"center"}>
+                    <Stack direction={"row"} spacing={7}>
+                        <Button onClick={toggleColorMode}>{colorMode === "light" ? <MoonIcon /> : <SunIcon />}</Button>
+                        <Box>
+                            <Menu>
+                                <Tooltip label={"Alchemy API Key"}>
+                                    <MenuButton as={Button} variant={"ghost"}>
+                                        <BiKey />
+                                    </MenuButton>
+                                </Tooltip>
+                                <MenuList alignItems={"center"}>
+                                    <Box padding={"0.3rem"}>
+                                        <Text fontSize={"md"}>Alchemy API Key</Text>
+                                        <MenuDivider />
+                                        <Input type={"password"} placeholder="Alchemy API_KEY" defaultValue={alchemyAPIKey} onChange={apikeychange} onBlur={apikeychange} />
+                                    </Box>
+                                </MenuList>
+                            </Menu>
+                        </Box>
+                        <Box>
+                            <ConnectButton
+                                label={<FaWallet />}
+                                accountStatus={{
+                                    smallScreen: "avatar",
+                                    largeScreen: "full",
+                                }}
+                                showBalance={{
+                                    smallScreen: false,
+                                    largeScreen: true,
+                                }}
+                            />
+                        </Box>
+                    </Stack>
+                </Flex>
+            </Flex>
+        </Box>
     );
 }
