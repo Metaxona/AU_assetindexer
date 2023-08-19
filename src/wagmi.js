@@ -1,30 +1,18 @@
-import { configureChains, createConfig } from 'wagmi'
-import { sepolia, mainnet, polygon, bsc } from 'wagmi/chains'
-import { InjectedConnector } from 'wagmi/connectors/injected'
-import { MetaMaskConnector } from 'wagmi/connectors/metaMask'
-import { alchemyProvider } from 'wagmi/providers/alchemy'
+import { getDefaultWallets } from "@rainbow-me/rainbowkit";
+import { configureChains, createConfig } from "wagmi";
+import { arbitrum, arbitrumGoerli, goerli, mainnet, optimism, optimismGoerli, polygon, polygonMumbai, sepolia } from "wagmi/chains";
+import { publicProvider } from "wagmi/providers/public";
 
-import { publicProvider } from 'wagmi/providers/public'
+export const { chains, publicClient } = configureChains([arbitrum, arbitrumGoerli, goerli, mainnet, optimism, optimismGoerli, polygon, polygonMumbai, sepolia], [publicProvider()]);
 
-const { chains, publicClient, webSocketPublicClient } = configureChains(
-  [mainnet, sepolia, polygon, bsc],
-  [
-    publicProvider(),
-  ],
-)
+const { connectors } = getDefaultWallets({
+    appName: "AssetIndexer",
+    projectId: "10572be452812a0d483a4ec33344be81",
+    chains,
+});
 
-export const config = createConfig({
-  autoConnect: true,
-  connectors: [
-    new MetaMaskConnector({ chains }),
-    new InjectedConnector({
-      chains,
-      options: {
-        name: 'Injected',
-        shimDisconnect: true,
-      },
-    }),
-  ],
-  publicClient,
-  webSocketPublicClient,
-})
+export const wagmiConfig = createConfig({
+    autoConnect: true,
+    connectors,
+    publicClient,
+});
