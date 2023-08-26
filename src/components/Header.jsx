@@ -47,7 +47,7 @@ export function Header({ alchemyAPIKey, setAlchemyAPIKey }) {
                                         <BiKey />
                                     </MenuButton>
                                 </Tooltip>
-                                <MenuList alignItems={"center"}>
+                                <MenuList w={'15rem'} alignItems={"center"}>
                                     <Box padding={"0.3rem"}>
                                         <Text fontSize={"md"}>Alchemy API Key</Text>
                                         <MenuDivider />
